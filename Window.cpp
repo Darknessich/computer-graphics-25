@@ -32,6 +32,14 @@ Window::Window(HINSTANCE hInstance, int nCmdShow, int width, int height, LPCWSTR
   MoveWindow(hWnd, 100, 100, rc.right - rc.left, rc.bottom - rc.top, TRUE);
 }
 
+HWND Window::getHandle() const{
+  return hWnd;
+}
+
+void Window::setRender(Render* render) {
+  this->render = render;
+}
+
 void Window::run() {
   assert(render != nullptr);
   MSG msg = {};

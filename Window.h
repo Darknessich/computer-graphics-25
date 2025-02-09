@@ -9,7 +9,7 @@
 class Window {
 public:
   Window(HINSTANCE hInstance, int nCmdShow, int width, int height, LPCWSTR title);
-  HWND getHandle();
+  HWND getHandle() const;
   void setRender(Render* render);
   void run();
 

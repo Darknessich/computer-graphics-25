@@ -6,10 +6,12 @@ class Render {
 public:
   Render(HWND hWnd);
   ~Render();
-  void render();
+  bool render();
   void resize(UINT width, UINT height);
 
 private:
+  HRESULT createRenderTarget();
+
   ID3D11Device* device;
   ID3D11DeviceContext* context;
   IDXGISwapChain* swapChain;
