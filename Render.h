@@ -7,6 +7,7 @@ public:
   Render(HWND hWnd);
   ~Render();
   void render();
+  void resize(UINT width, UINT height);
 
 private:
   ID3D11Device* device;
