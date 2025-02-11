@@ -11,11 +11,15 @@ int APIENTRY wWinMain(
   UNREFERENCED_PARAMETER(hPrevInstance);
   UNREFERENCED_PARAMETER(lpCmdLine);
 
-  Window window(hInstance, nCmdShow, 1280, 720, L"DX11 Window");
+  Window window;
+
+  if (!window.init(hInstance, L"CG25-DX11 01-Window"))
+  {
+    return FALSE;
+  }
+
   Render render(window.getHandle());
-
   window.setRender(&render);
-  window.run();
-
-  return 0;
+  window.show(nCmdShow, 1280, 720);
+  return window.run();
 }

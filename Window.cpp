@@ -2,24 +2,37 @@
 
 #include "Window.h"
 
-Window::Window(HINSTANCE hInstance, int nCmdShow, int width, int height, LPCWSTR title) 
-  : render(nullptr)
+BOOL Window::init(HINSTANCE hInstance, LPCWSTR title) 
 {
+  const LPCWSTR CLASS_NAME = L"DX11WindowClass";
+  
   WNDCLASS wc = {};
   wc.lpfnWndProc = Window::WndProc;
   wc.hInstance = hInstance;
-  wc.lpszClassName = L"DX11WindowClass";
-  RegisterClass(&wc);
+  wc.lpszClassName = CLASS_NAME;
+  
+  if (!RegisterClass(&wc))
+  {
+    return FALSE;
+  }
 
-  hWnd = CreateWindowW(
-    L"DX11WindowClass", title, WS_OVERLAPPEDWINDOW,
+  m_hWnd = CreateWindowW(
+    CLASS_NAME, title, WS_OVERLAPPEDWINDOW,
     CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
     nullptr, nullptr, hInstance, nullptr
   );
-  
-  assert(hWnd != nullptr);
-  ShowWindow(hWnd, nCmdShow);
-  UpdateWindow(hWnd);
+
+  return m_hWnd != nullptr;
+}
+
+void Window::show(int nCmdShow, int width, int height) 
+{
+  assert(m_hWnd != nullptr);
+
+  const int X = 100, Y = 100;
+
+  ShowWindow(m_hWnd, nCmdShow);
+  UpdateWindow(m_hWnd);
 
   RECT rc;
   rc.left = 0;
@@ -28,40 +41,49 @@ Window::Window(HINSTANCE hInstance, int nCmdShow, int width, int height, LPCWSTR
   rc.bottom = height;
 
   AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, TRUE);
-
-  MoveWindow(hWnd, 100, 100, rc.right - rc.left, rc.bottom - rc.top, TRUE);
+  MoveWindow(m_hWnd, X, Y, rc.right - rc.left, rc.bottom - rc.top, TRUE);
 }
 
-HWND Window::getHandle() const{
-  return hWnd;
+HWND Window::getHandle() const
+{
+  return m_hWnd;
 }
 
-void Window::setRender(Render* render) {
-  this->render = render;
+void Window::setRender(Render* render) 
+{
+  m_render = render;
 }
 
-void Window::run() {
-  assert(render != nullptr);
+BOOL Window::run() 
+{
+  assert(m_render != nullptr);
+  
   MSG msg = {};
-  while (msg.message != WM_QUIT) {
-    if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+  while (msg.message != WM_QUIT) 
+  {
+    if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) 
+    {
       TranslateMessage(&msg);
       DispatchMessage(&msg);
     }
     
-    render->render();
+    m_render->render();
   }
+
+  return static_cast<BOOL>(msg.wParam);
 }
 
-LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
+{
   Window* window = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
   switch (message)
   {
   case WM_SIZE:
-    if (window && window->render) {
+    if (window && window->m_render) 
+    {
       RECT rc;
       GetClientRect(hWnd, &rc);
-      window->render->resize(rc.right - rc.left, rc.bottom - rc.top);
+      window->m_render->resize(rc.right - rc.left, rc.bottom - rc.top);
     }
     return 0;
 
@@ -72,4 +94,3 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
   return DefWindowProc(hWnd, message, wParam, lParam);
 }
-

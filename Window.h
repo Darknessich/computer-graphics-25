@@ -8,13 +8,16 @@
 
 class Window {
 public:
-  Window(HINSTANCE hInstance, int nCmdShow, int width, int height, LPCWSTR title);
+  BOOL init(HINSTANCE hInstance, LPCWSTR title);
+  void show(int nCmdShow, int width, int height);
+
   HWND getHandle() const;
   void setRender(Render* render);
-  void run();
+  
+  BOOL run();
 
 private:
   static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-  HWND hWnd;
-  Render* render;
+  HWND m_hWnd = nullptr;
+  Render* m_render = nullptr;
 };
