@@ -2,9 +2,6 @@
 #include <dxgi.h>
 #include <cassert>
 
-#pragma comment(lib, "dxgi.lib") // don't work on my computer without these libs
-#pragma comment(lib, "d3d11.lib") // uncomment if it doesn't launch
-
 IDXGIAdapter* selectHardwareAdapter(IDXGIFactory* pFactory)
 {
   UINT adapterIdx = 0;
