@@ -18,6 +18,6 @@ public:
 
 private:
   static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-  HWND m_hWnd = nullptr;
-  Render* m_render = nullptr;
+  HWND m_hWnd{ nullptr };
+  Render* m_render{ nullptr };
 };

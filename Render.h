@@ -4,16 +4,18 @@
 
 class Render {
 public:
-  Render(HWND hWnd);
   ~Render();
+  bool init(HWND hWnd);
   bool render();
-  void resize(UINT width, UINT height);
+  bool resize(UINT width, UINT height);
 
 private:
+  HRESULT createDevice(IDXGIAdapter* pAdapter);
+  HRESULT createSwapChain(HWND hWnd, IDXGIFactory* pFactory);
   HRESULT createRenderTarget();
 
-  ID3D11Device* device;
-  ID3D11DeviceContext* context;
-  IDXGISwapChain* swapChain;
-  ID3D11RenderTargetView* renderTargetView;
+  ID3D11Device* m_device{ nullptr };
+  ID3D11DeviceContext* m_deviceContext{ nullptr };
+  IDXGISwapChain* m_swapChain{ nullptr };
+  ID3D11RenderTargetView* m_renderTargetView{ nullptr };
 };
