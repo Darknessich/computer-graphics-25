@@ -1,30 +1,8 @@
-#include "Render.h"
 #include <dxgi.h>
 #include <cassert>
 
-IDXGIAdapter* selectHardwareAdapter(IDXGIFactory* pFactory)
-{
-  UINT adapterIdx = 0;
-  IDXGIAdapter* pSelectedAdapter = nullptr;
-  IDXGIAdapter* pCurrentAdapter = nullptr;
-  
-  while (SUCCEEDED(pFactory->EnumAdapters(adapterIdx, &pCurrentAdapter)))
-  {
-    DXGI_ADAPTER_DESC desc;
-    pCurrentAdapter->GetDesc(&desc);
-
-    if (wcscmp(desc.Description, L"Microsoft Basic Render Driver") != 0)
-    {
-      pSelectedAdapter = pCurrentAdapter;
-      break;
-    }
-
-    pCurrentAdapter->Release();
-    adapterIdx++;
-  }
-
-  return pSelectedAdapter;
-}
+#include "utils/utils.h"
+#include "Render.h"
 
 bool Render::init(HWND hWnd) 
 {
@@ -34,7 +12,7 @@ bool Render::init(HWND hWnd)
   
   if (SUCCEEDED(result))
   {
-    pAdapter = selectHardwareAdapter(pFactory);
+    pAdapter = SelectHardwareAdapter(pFactory);
     result = createDevice(pAdapter);
   }
 
@@ -48,16 +26,8 @@ bool Render::init(HWND hWnd)
     result = createRenderTarget();
   }
 
-  if (pAdapter != nullptr)
-  {
-    pAdapter->Release();
-  }
-
-  if (pFactory != nullptr)
-  {
-    pFactory->Release();
-  }
-
+  SafeRelease(pAdapter);
+  SafeRelease(pFactory);
   return SUCCEEDED(result);
 }
 
@@ -105,15 +75,10 @@ HRESULT Render::createSwapChain(HWND hWnd, IDXGIFactory* pFactory)
 }
 
 Render::~Render() {
-  IUnknown* members[] = { m_device, m_deviceContext, m_renderTargetView, m_swapChain };
-
-  for (auto member : members)
-  {
-    if (member != nullptr)
-    {
-      member->Release();
-    }
-  }
+  SafeRelease(m_device);
+  SafeRelease(m_deviceContext);
+  SafeRelease(m_swapChain);
+  SafeRelease(m_renderTargetView);
 }
 
 HRESULT Render::createRenderTarget() {
@@ -125,11 +90,7 @@ HRESULT Render::createRenderTarget() {
     result = m_device->CreateRenderTargetView(backBuffer, NULL, &m_renderTargetView);
   }
 
-  if (backBuffer != nullptr)
-  {
-    backBuffer->Release();
-  }
-
+  SafeRelease(backBuffer);
   return result;
 }
 
@@ -139,11 +100,7 @@ bool Render::resize(UINT width, UINT height) {
     return true;
   }
 
-  if (m_renderTargetView != nullptr)
-  {
-    m_renderTargetView->Release();
-  }
-
+  SafeRelease(m_renderTargetView);
   HRESULT result = m_swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
   return SUCCEEDED(result) && SUCCEEDED(createRenderTarget());
 }

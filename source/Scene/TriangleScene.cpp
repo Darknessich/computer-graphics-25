@@ -3,76 +3,8 @@
 #include <d3dcompiler.h>
 #include <string>
 
+#include "utils/utils.h"
 #include "TriangleScene.h"
-
-inline void SafeRelease(IUnknown* p)
-{
-  if (p != nullptr)
-  {
-    p->Release();
-  }
-}
-
-std::string wstr2str(const std::wstring& wstr)
-{
-  return std::string{ wstr.begin(), wstr.end() };
-}
-
-HRESULT ReadShaderData(LPCWSTR path, LPCVOID* ppData, SIZE_T* pSize)
-{
-  FILE* pFile = nullptr;
-  _wfopen_s(&pFile, path, L"rb");
-  assert(pFile != nullptr);
-  if (pFile == nullptr)
-  {
-    return E_FAIL;
-  }
-
-  fseek(pFile, 0, SEEK_END);
-  long long size = _ftelli64(pFile);
-  fseek(pFile, 0, SEEK_SET);
-
-  char* data = new char[size + 1];
-  size_t rd = fread(data, 1, size, pFile);
-  assert(rd != (size_t)size);
-  if (rd != (size_t)size)
-  {
-    return E_FAIL;
-  }
-
-  *ppData = (LPCVOID)data;
-  *pSize = size;
-  fclose(pFile);
-  return S_OK;
-}
-
-HRESULT CompileShader(LPCWSTR path, LPCSTR entryPoint, LPCSTR target, ID3DBlob** ppCode)
-{
-  LPCVOID data = nullptr;
-  SIZE_T size = 0;
-  HRESULT result = ReadShaderData(path, &data, &size);
-  
-  ID3DBlob* pCode = nullptr;
-  ID3DBlob* pErrMsg = nullptr;
-  
-  UINT flags = 0;
-#ifdef _DEBUG
-  flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
-#endif 
-
-  if (SUCCEEDED(result))
-  {
-    result = D3DCompile(data, size, wstr2str(path).c_str(), nullptr, nullptr, entryPoint, target, flags, 0, ppCode, &pErrMsg);
-  }
-
-  if (FAILED(result) && pErrMsg != nullptr)
-  {
-    OutputDebugStringA((LPCSTR) pErrMsg->GetBufferPointer());
-  }
-
-  SafeRelease(pErrMsg);
-  return result;
-}
 
 TriangleScene::TriangleScene(const Vertex vertices[3], const USHORT indices[3])
   : m_vertices{ vertices[0], vertices[1], vertices[2] },
@@ -132,6 +64,8 @@ HRESULT TriangleScene::initVertexBuffer()
     const char name[] = "TriangleSceneVertexBuffer";
     result = m_pVertexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, sizeof(name), name);
   }
+
+  return result;
 }
 
 HRESULT TriangleScene::initIndexBuffer()
