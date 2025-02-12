@@ -4,7 +4,7 @@
 #include "utils/utils.h"
 #include "Render.h"
 
-bool Render::init(HWND hWnd) 
+bool Render::init(HWND hWnd, IScene* pScene) 
 {
   IDXGIFactory* pFactory{ nullptr };
   IDXGIAdapter* pAdapter{ nullptr };
@@ -26,6 +26,12 @@ bool Render::init(HWND hWnd)
     result = createRenderTarget();
   }
 
+  if (SUCCEEDED(result) && pScene != nullptr)
+  {
+    result = pScene->init(m_device);
+  }
+
+  m_pScene = pScene;
   SafeRelease(pAdapter);
   SafeRelease(pFactory);
   return SUCCEEDED(result);
@@ -102,7 +108,19 @@ bool Render::resize(UINT width, UINT height) {
 
   SafeRelease(m_renderTargetView);
   HRESULT result = m_swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
-  return SUCCEEDED(result) && SUCCEEDED(createRenderTarget());
+  
+  if (SUCCEEDED(result))
+  {
+    result = createRenderTarget();
+  }
+
+  if (SUCCEEDED(result))
+  {
+    m_width = width;
+    m_height = height;
+  }
+
+  return SUCCEEDED(result);
 }
 
 bool Render::render() {
@@ -114,7 +132,32 @@ bool Render::render() {
   static const FLOAT BackColor[4] = { 0.10f, 0.41f, 0.88f, 1.0f };
   m_deviceContext->ClearRenderTargetView(m_renderTargetView, BackColor);
 
+  setupViewport();
+  if (m_pScene != nullptr)
+  {
+    m_pScene->draw(m_deviceContext);
+  }
+
   HRESULT result = m_swapChain->Present(0, 0);
 
   return SUCCEEDED(result);
+}
+
+void Render::setupViewport()
+{
+  D3D11_VIEWPORT viewport;
+  viewport.TopLeftX = 0;
+  viewport.TopLeftY = 0;
+  viewport.Width = (FLOAT)m_width;
+  viewport.Height = (FLOAT)m_height;
+  viewport.MinDepth = 0.0f;
+  viewport.MaxDepth = 1.0f;
+  m_deviceContext->RSSetViewports(1, &viewport);
+
+  D3D11_RECT rect;
+  rect.left = 0;
+  rect.top = 0;
+  rect.right = m_width;
+  rect.bottom = m_height;
+  m_deviceContext->RSSetScissorRects(1, &rect);
 }
