@@ -12,6 +12,15 @@ TriangleScene::TriangleScene(const Vertex vertices[3], const USHORT indices[3])
 {
 }
 
+TriangleScene::~TriangleScene()
+{
+  SafeRelease(m_pInputLayout);
+  SafeRelease(m_pPixelShader);
+  SafeRelease(m_pVertexShader);
+  SafeRelease(m_pVertexBuffer);
+  SafeRelease(m_pIndexBuffer);
+}
+
 HRESULT TriangleScene::init(ID3D11Device* pDevice)
 {
   m_pDevice = pDevice;
@@ -152,4 +161,18 @@ HRESULT TriangleScene::initInputLayout(ID3DBlob* pVertexShaderCode)
   }
 
   return result;
+}
+
+void TriangleScene::draw(ID3D11DeviceContext* pDeviceContext)
+{
+  ID3D11Buffer* vertexBuffers[] = { m_pVertexBuffer };
+  UINT strides[] = { 16 }, offsets[] = { 0 };
+  
+  pDeviceContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+  pDeviceContext->IASetVertexBuffers(0, 1, vertexBuffers, strides, offsets);
+  pDeviceContext->IASetInputLayout(m_pInputLayout);
+  pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+  pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);
+  pDeviceContext->PSSetShader(m_pPixelShader, nullptr, 0);
+  pDeviceContext->DrawIndexed(3, 0, 0);
 }
