@@ -5,36 +5,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="src">
+    <Filter Include="source">
       <UniqueIdentifier>{5f079ce0-b28b-4b42-bf6b-53ec97b0580a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Render">
+    <Filter Include="source\Render">
       <UniqueIdentifier>{07724e20-ecf1-482b-a043-2e98c5881695}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Window">
+    <Filter Include="source\Window">
       <UniqueIdentifier>{fa2c9142-ab0d-4720-a47d-07a24570c677}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>src\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>src\Window</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Window.h">
-      <Filter>src\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>src\Render</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\window\Window.cpp">
+      <Filter>source\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="source\render\Render.cpp">
+      <Filter>source\Render</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\window\Window.h">
+      <Filter>source\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="source\render\Render.h">
+      <Filter>source\Render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

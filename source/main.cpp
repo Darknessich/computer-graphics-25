@@ -1,5 +1,5 @@
-#include "Window.h"
-#include "Render.h"
+#include "Window/Window.h"
+#include "Render/Render.h"
 
 int APIENTRY wWinMain(
   _In_ HINSTANCE hInstance, 
