@@ -144,10 +144,13 @@
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\render\Render.cpp" />
+    <ClCompile Include="source\Scene\TriangleScene.cpp" />
     <ClCompile Include="source\window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\render\Render.h" />
+    <ClInclude Include="source\Scene\IScene.h" />
+    <ClInclude Include="source\Scene\TriangleScene.h" />
     <ClInclude Include="source\window\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

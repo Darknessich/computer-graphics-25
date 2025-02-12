@@ -14,6 +14,9 @@
     <Filter Include="source\Window">
       <UniqueIdentifier>{fa2c9142-ab0d-4720-a47d-07a24570c677}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Scene">
+      <UniqueIdentifier>{afea24a6-13c0-40d8-b345-49c47e1a6435}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -28,6 +31,9 @@
     <ClCompile Include="source\render\Render.cpp">
       <Filter>source\Render</Filter>
     </ClCompile>
+    <ClCompile Include="source\Scene\TriangleScene.cpp">
+      <Filter>source\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\window\Window.h">
@@ -35,6 +41,12 @@
     </ClInclude>
     <ClInclude Include="source\render\Render.h">
       <Filter>source\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene\IScene.h">
+      <Filter>source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene\TriangleScene.h">
+      <Filter>source\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
