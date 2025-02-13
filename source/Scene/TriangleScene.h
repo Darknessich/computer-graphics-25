@@ -2,7 +2,7 @@
 
 #include "IScene.h"
 
-class TriangleScene : IScene {
+class TriangleScene : public IScene {
 public:
   struct Vertex {
     float x, y, z;

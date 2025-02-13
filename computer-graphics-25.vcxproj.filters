@@ -20,6 +20,9 @@
     <Filter Include="source\utils">
       <UniqueIdentifier>{17e36fa8-ecaa-4a65-afaa-8075a4145b36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\shaders">
+      <UniqueIdentifier>{dbf6285d-5ded-463f-9114-fd33f9af633f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -57,5 +60,10 @@
     <ClInclude Include="source\utils\utils.h">
       <Filter>source\utils</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="source\shaders\TriangleScene.hlsl">
+      <Filter>source\shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

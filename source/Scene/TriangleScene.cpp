@@ -80,7 +80,7 @@ HRESULT TriangleScene::initVertexBuffer()
 HRESULT TriangleScene::initIndexBuffer()
 {
   D3D11_BUFFER_DESC desc = {};
-  desc.ByteWidth = sizeof(USHORT);
+  desc.ByteWidth = sizeof(m_indices);
   desc.Usage = D3D11_USAGE_IMMUTABLE;
   desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
   desc.CPUAccessFlags = 0;
@@ -106,7 +106,7 @@ HRESULT TriangleScene::initIndexBuffer()
 
 HRESULT TriangleScene::initVertexShader(ID3DBlob** ppCode)
 {
-  static const LPCWSTR path = L"shaders/TriangleScene.hlsl";
+  static const LPCWSTR path = L"source/shaders/TriangleScene.vs";
 
   HRESULT result = CompileShader(path, "vs", "vs_5_0", ppCode);
 
@@ -126,7 +126,7 @@ HRESULT TriangleScene::initVertexShader(ID3DBlob** ppCode)
 
 HRESULT TriangleScene::initPixelShader()
 {
-  static const LPCWSTR path = L"shaders/TriangleScene.hlsl";
+  static const LPCWSTR path = L"source/shaders/TriangleScene.ps";
 
   ID3DBlob* pCode = nullptr;
   HRESULT result = CompileShader(path, "ps", "ps_5_0", &pCode);

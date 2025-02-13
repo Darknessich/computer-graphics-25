@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="source\shaders\TriangleScene.ps" />
+    <None Include="source\shaders\TriangleScene.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />

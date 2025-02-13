@@ -2,6 +2,8 @@
 
 #include "Window.h"
 
+Render* Window::m_render = nullptr;
+
 BOOL Window::init(HINSTANCE hInstance, LPCWSTR title) 
 {
   const LPCWSTR CLASS_NAME = L"DX11WindowClass";
@@ -75,15 +77,14 @@ BOOL Window::run()
 
 LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 {
-  Window* window = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
   switch (message)
   {
   case WM_SIZE:
-    if (window && window->m_render) 
+    if (m_render != nullptr) 
     {
       RECT rc;
       GetClientRect(hWnd, &rc);
-      window->m_render->resize(rc.right - rc.left, rc.bottom - rc.top);
+      m_render->resize(rc.right - rc.left, rc.bottom - rc.top);
     }
     return 0;
 
