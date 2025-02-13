@@ -15,7 +15,7 @@ int APIENTRY wWinMain(
   Window window;
   Render render;
 
-  if (!window.init(hInstance, L"CG25-DX11 01-Window"))
+  if (!window.init(hInstance, L"CG25-DX11 02-Triangle"))
   {
     return FALSE;
   }
