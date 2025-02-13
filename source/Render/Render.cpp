@@ -81,10 +81,32 @@ HRESULT Render::createSwapChain(HWND hWnd, IDXGIFactory* pFactory)
 }
 
 Render::~Render() {
-  SafeRelease(m_device);
-  SafeRelease(m_deviceContext);
-  SafeRelease(m_swapChain);
+  delete m_pScene;
+
   SafeRelease(m_renderTargetView);
+  SafeRelease(m_swapChain);
+  SafeRelease(m_deviceContext);
+
+#ifdef _DEBUG
+  if (m_device != nullptr)
+  {
+    ID3D11Debug* pDebug = nullptr;
+    HRESULT result = m_device->QueryInterface(__uuidof(ID3D11Debug), (void**)&pDebug);
+    assert(SUCCEEDED(result));
+    if (pDebug != nullptr)
+    {
+      if (pDebug->AddRef() != 3) // ID3D11Device && ID3D11Debug && after AddRef()
+      {
+        pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL | D3D11_RLDO_IGNORE_INTERNAL);
+      }
+      pDebug->Release();
+
+      SafeRelease(pDebug);
+    }
+  }
+#endif // _DEBUG
+
+  SafeRelease(m_device);
 }
 
 HRESULT Render::createRenderTarget() {
