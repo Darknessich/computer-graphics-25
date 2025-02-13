@@ -151,7 +151,7 @@ bool Render::render() {
   ID3D11RenderTargetView* views[] = { m_renderTargetView };
   m_deviceContext->OMSetRenderTargets(1, views, nullptr);
 
-  static const FLOAT BackColor[4] = { 0.10f, 0.41f, 0.88f, 1.0f };
+  static const FLOAT BackColor[4] = { 0.12f, 0.14f, 0.38f, 1.0f };
   m_deviceContext->ClearRenderTargetView(m_renderTargetView, BackColor);
 
   setupViewport();

@@ -6,7 +6,7 @@
 std::string wstr2str(const std::wstring& wstr)
 {
   std::string str(wstr.length(), '\0');
-  for (int i = 0; i < wstr.length(); ++i)
+  for (size_t i = 0; i < wstr.length(); ++i)
   {
     str[i] = static_cast<char>(wstr[i]);
   }

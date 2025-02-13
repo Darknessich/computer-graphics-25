@@ -26,6 +26,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="source\shaders\TriangleScene.ps" />
+    <None Include="source\shaders\TriangleScene.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -60,10 +62,5 @@
     <ClInclude Include="source\utils\utils.h">
       <Filter>source\utils</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="source\shaders\TriangleScene.hlsl">
-      <Filter>source\shaders</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>
