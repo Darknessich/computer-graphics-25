@@ -2,7 +2,7 @@
 
 #include "Window.h"
 
-Render* Window::m_render = nullptr;
+Render* Window::m_pRender = nullptr;
 
 BOOL Window::init(HINSTANCE hInstance, LPCWSTR title) 
 {
@@ -51,14 +51,14 @@ HWND Window::getHandle() const
   return m_hWnd;
 }
 
-void Window::setRender(Render* render) 
+void Window::setRender(Render* pRender)
 {
-  m_render = render;
+  m_pRender = pRender;
 }
 
 BOOL Window::run() 
 {
-  assert(m_render != nullptr);
+  assert(m_pRender != nullptr);
   
   MSG msg = {};
   while (msg.message != WM_QUIT) 
@@ -69,7 +69,7 @@ BOOL Window::run()
       DispatchMessage(&msg);
     }
     
-    m_render->render();
+    m_pRender->render();
   }
 
   return static_cast<BOOL>(msg.wParam);
@@ -80,11 +80,11 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
   switch (message)
   {
   case WM_SIZE:
-    if (m_render != nullptr) 
+    if (m_pRender != nullptr) 
     {
       RECT rc;
       GetClientRect(hWnd, &rc);
-      m_render->resize(rc.right - rc.left, rc.bottom - rc.top);
+      m_pRender->resize(rc.right - rc.left, rc.bottom - rc.top);
     }
     return 0;
 

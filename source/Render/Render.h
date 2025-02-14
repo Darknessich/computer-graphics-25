@@ -20,8 +20,8 @@ private:
   UINT m_width{ 16 }, m_height{ 16 };
   IScene* m_pScene{ nullptr };
 
-  ID3D11Device* m_device{ nullptr };
-  ID3D11DeviceContext* m_deviceContext{ nullptr };
-  IDXGISwapChain* m_swapChain{ nullptr };
-  ID3D11RenderTargetView* m_renderTargetView{ nullptr };
+  ID3D11Device* m_pDevice{ nullptr };
+  ID3D11DeviceContext* m_pDeviceContext{ nullptr };
+  IDXGISwapChain* m_pSwapChain{ nullptr };
+  ID3D11RenderTargetView* m_pRenderTargetView{ nullptr };
 };

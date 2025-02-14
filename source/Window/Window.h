@@ -12,12 +12,12 @@ public:
   void show(int nCmdShow, int width, int height);
 
   HWND getHandle() const;
-  void setRender(Render* render);
+  void setRender(Render* pRender);
   
   BOOL run();
 
 private:
   static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-  static Render* m_render;
+  static Render* m_pRender;
   HWND m_hWnd{ nullptr };
 };

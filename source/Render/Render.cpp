@@ -28,7 +28,7 @@ bool Render::init(HWND hWnd, IScene* pScene)
 
   if (SUCCEEDED(result) && pScene != nullptr)
   {
-    result = pScene->init(m_device);
+    result = pScene->init(m_pDevice);
   }
 
   m_pScene = pScene;
@@ -50,7 +50,7 @@ HRESULT Render::createDevice(IDXGIAdapter* pAdapter)
 #endif
   HRESULT result = D3D11CreateDevice(
     pAdapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, flags, levels, 1, 
-    D3D11_SDK_VERSION, &m_device, &level, &m_deviceContext
+    D3D11_SDK_VERSION, &m_pDevice, &level, &m_pDeviceContext
   );
   assert(level == D3D_FEATURE_LEVEL_11_0);
   return result;
@@ -77,21 +77,21 @@ HRESULT Render::createSwapChain(HWND hWnd, IDXGIFactory* pFactory)
   scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
   scd.Flags = 0;
 
-  return pFactory->CreateSwapChain(m_device, &scd, &m_swapChain);
+  return pFactory->CreateSwapChain(m_pDevice, &scd, &m_pSwapChain);
 }
 
 Render::~Render() {
   delete m_pScene;
 
-  SafeRelease(m_renderTargetView);
-  SafeRelease(m_swapChain);
-  SafeRelease(m_deviceContext);
+  SafeRelease(m_pRenderTargetView);
+  SafeRelease(m_pSwapChain);
+  SafeRelease(m_pDeviceContext);
 
 #ifdef _DEBUG
-  if (m_device != nullptr)
+  if (m_pDevice != nullptr)
   {
     ID3D11Debug* pDebug = nullptr;
-    HRESULT result = m_device->QueryInterface(__uuidof(ID3D11Debug), (void**)&pDebug);
+    HRESULT result = m_pDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&pDebug);
     assert(SUCCEEDED(result));
     if (pDebug != nullptr)
     {
@@ -106,30 +106,30 @@ Render::~Render() {
   }
 #endif // _DEBUG
 
-  SafeRelease(m_device);
+  SafeRelease(m_pDevice);
 }
 
 HRESULT Render::createRenderTarget() {
-  ID3D11Texture2D* backBuffer = nullptr;
-  HRESULT result = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backBuffer);
+  ID3D11Texture2D* pBackBuffer = nullptr;
+  HRESULT result = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBackBuffer);
   
   if (SUCCEEDED(result))
   {
-    result = m_device->CreateRenderTargetView(backBuffer, NULL, &m_renderTargetView);
+    result = m_pDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pRenderTargetView);
   }
 
-  SafeRelease(backBuffer);
+  SafeRelease(pBackBuffer);
   return result;
 }
 
 bool Render::resize(UINT width, UINT height) {
-  if (m_swapChain == nullptr)
+  if (m_pSwapChain == nullptr)
   {
     return true;
   }
 
-  SafeRelease(m_renderTargetView);
-  HRESULT result = m_swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
+  SafeRelease(m_pRenderTargetView);
+  HRESULT result = m_pSwapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
   
   if (SUCCEEDED(result))
   {
@@ -146,21 +146,21 @@ bool Render::resize(UINT width, UINT height) {
 }
 
 bool Render::render() {
-  m_deviceContext->ClearState();
+  m_pDeviceContext->ClearState();
 
-  ID3D11RenderTargetView* views[] = { m_renderTargetView };
-  m_deviceContext->OMSetRenderTargets(1, views, nullptr);
+  ID3D11RenderTargetView* views[] = { m_pRenderTargetView };
+  m_pDeviceContext->OMSetRenderTargets(1, views, nullptr);
 
   static const FLOAT BackColor[4] = { 0.12f, 0.14f, 0.38f, 1.0f };
-  m_deviceContext->ClearRenderTargetView(m_renderTargetView, BackColor);
+  m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView, BackColor);
 
   setupViewport();
   if (m_pScene != nullptr)
   {
-    m_pScene->draw(m_deviceContext);
+    m_pScene->draw(m_pDeviceContext);
   }
 
-  HRESULT result = m_swapChain->Present(0, 0);
+  HRESULT result = m_pSwapChain->Present(0, 0);
 
   return SUCCEEDED(result);
 }
@@ -174,12 +174,12 @@ void Render::setupViewport()
   viewport.Height = (FLOAT)m_height;
   viewport.MinDepth = 0.0f;
   viewport.MaxDepth = 1.0f;
-  m_deviceContext->RSSetViewports(1, &viewport);
+  m_pDeviceContext->RSSetViewports(1, &viewport);
 
   D3D11_RECT rect;
   rect.left = 0;
   rect.top = 0;
   rect.right = m_width;
   rect.bottom = m_height;
-  m_deviceContext->RSSetScissorRects(1, &rect);
+  m_pDeviceContext->RSSetScissorRects(1, &rect);
 }
