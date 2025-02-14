@@ -1,5 +1,6 @@
 #include "Window/Window.h"
 #include "Render/Render.h"
+#include "Scene/TriangleScene.h"
 
 int APIENTRY wWinMain(
   _In_ HINSTANCE hInstance, 
@@ -14,12 +15,19 @@ int APIENTRY wWinMain(
   Window window;
   Render render;
 
-  if (!window.init(hInstance, L"CG25-DX11 01-Window"))
+  if (!window.init(hInstance, L"CG25-DX11 02-Triangle"))
   {
     return FALSE;
   }
 
-  if (!render.init(window.getHandle()))
+  TriangleScene::Vertex vertices[3] = {
+      {-0.5f, -0.5f, 0.0f, RGB(255, 0, 0)},
+      { 0.5f, -0.5f, 0.0f, RGB(0, 255, 0)},
+      { 0.0f,  0.5f, 0.0f, RGB(0, 0, 255)}
+  };
+  USHORT indices[3] = {0U, 2U, 1U};
+  IScene* pScene = new TriangleScene(vertices, indices);
+  if (!render.init(window.getHandle(), pScene))
   {
     return FALSE;
   }

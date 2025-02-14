@@ -14,9 +14,20 @@
     <Filter Include="source\Window">
       <UniqueIdentifier>{fa2c9142-ab0d-4720-a47d-07a24570c677}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Scene">
+      <UniqueIdentifier>{afea24a6-13c0-40d8-b345-49c47e1a6435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\utils">
+      <UniqueIdentifier>{17e36fa8-ecaa-4a65-afaa-8075a4145b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\shaders">
+      <UniqueIdentifier>{dbf6285d-5ded-463f-9114-fd33f9af633f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="source\shaders\TriangleScene.ps" />
+    <None Include="source\shaders\TriangleScene.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -28,6 +39,12 @@
     <ClCompile Include="source\render\Render.cpp">
       <Filter>source\Render</Filter>
     </ClCompile>
+    <ClCompile Include="source\Scene\TriangleScene.cpp">
+      <Filter>source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utils\utils.cpp">
+      <Filter>source\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\window\Window.h">
@@ -35,6 +52,15 @@
     </ClInclude>
     <ClInclude Include="source\render\Render.h">
       <Filter>source\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene\IScene.h">
+      <Filter>source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene\TriangleScene.h">
+      <Filter>source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\utils\utils.h">
+      <Filter>source\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
